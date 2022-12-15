@@ -124,7 +124,7 @@ public class UserServiceImpl implements UserService {
     public List<UserDto> findByFirstOrLastName(String name, String lastName) {
         List<User> byFirstName = userRepository.findByFirstNameOrLastName(name, lastName);
         if (byFirstName.isEmpty()) {
-            throw new UserException("User not found with this : " + name, HttpStatus.BAD_REQUEST);
+            throw new UserException("User not found with this : " + name + "and " + lastName, HttpStatus.BAD_REQUEST);
 
         }
         List<UserDto> listOfUser = new ArrayList<>();
@@ -140,7 +140,7 @@ public class UserServiceImpl implements UserService {
     public List<UserDto> findByFirstAndLastName(String name, String lastName) {
         List<User> byFirstName = userRepository.findByFirstNameAndLastName(name, lastName);
         if (byFirstName.isEmpty()) {
-            throw new UserException("User not found with this : " + name, HttpStatus.BAD_REQUEST);
+            throw new UserException("User not found with this : " + name + "and " + lastName, HttpStatus.BAD_REQUEST);
 
         }
         List<UserDto> listOfUser = new ArrayList<>();

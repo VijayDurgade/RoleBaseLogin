@@ -125,6 +125,9 @@ class UserServiceImplTest {
         Mockito.when(userRepository.findByFirstName("vijay")).thenReturn(newLists);
         List<UserDto> firstNameList = userServiceImpl.findByName("vijay");
         assertEquals(newLists.size(),firstNameList.size());
+
+        UserException asv = assertThrows(UserException.class, () -> userServiceImpl.findByName("xyz"));
+        assertEquals(HttpStatus.BAD_REQUEST,asv.getHttpStatus());
     }
     @Test
     void findByFirstOrLastName() {
@@ -136,13 +139,38 @@ class UserServiceImplTest {
         List<UserDto> byFirstOrLastName = userServiceImpl.findByFirstOrLastName("vijay", "durgade");
         assertEquals(newLists.size(),byFirstOrLastName.size());
 
+        UserException userException = assertThrows(UserException.class, () -> userServiceImpl.findByFirstOrLastName("xyz", "asdfg"));
+        assertEquals(HttpStatus.BAD_REQUEST,userException.getHttpStatus());
+
     }
 
     @Test
     void findByFirstAndLastName() {
+        List<User> newLists = new ArrayList<>();
+        newLists.add(user);
+        newLists.add(user);
+        newLists.add(user);
+        Mockito.when(userRepository.findByFirstNameAndLastName("vijay","durgade")).thenReturn(newLists);
+        List<UserDto> byFirstAndLastName = userServiceImpl.findByFirstAndLastName("vijay", "durgade");
+        assertEquals(newLists.size(), byFirstAndLastName.size());
+
+        UserException userException = assertThrows(UserException.class, () -> userServiceImpl.findByFirstAndLastName("firstName", "lastName"));
+        assertEquals(HttpStatus.BAD_REQUEST,userException.getHttpStatus());
+
     }
 
     @Test
     void findByNameEndsWith() {
+        List<User> newLists = new ArrayList<>();
+        newLists.add(user);
+        newLists.add(user);
+        newLists.add(user);
+        Mockito.when(userRepository.findByNameEndsWith("chars")).thenReturn(newLists);
+        List<UserDto> nameEndsWithList = userServiceImpl.findByNameEndsWith("chars");
+        assertEquals(newLists.size(), nameEndsWithList.size());
+
+        UserException userException = assertThrows(UserException.class, () -> userServiceImpl.findByNameEndsWith("jay"));
+        assertEquals(HttpStatus.BAD_REQUEST,userException.getHttpStatus());
+
     }
 }
